@@ -16,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 		* `brew install imagemagick@6` (only v6 works with Wand on mac)
 		* `python3 -m pip install Wand`
 	* Windows
-		* follow [inscructions](http://docs.wand-py.org/en/0.4.4/guide/install.html#install-imagemagick-windows)
+		* follow [instructions](http://docs.wand-py.org/en/0.4.4/guide/install.html#install-imagemagick-windows)
 		* `python3 -m pip install Wand`
 4. Get [Tesseract](https://github.com/tesseract-ocr/tesseract/wiki)
 	* Mac
@@ -31,6 +31,6 @@ These instructions will get you a copy of the project up and running on your loc
 
 from the directoty of the file simply run `python3 textScraper.py`.
 You will be prompted for:
-1. The name of the directory where the documents are stored, eg `currentWorkingDirectory/<document directory>`. If nothing is provided, it will look for files in the current working directory.
-2. The name of the directory scraped `<document>.txt` files should be saved. Defaults to `/renders`.
+1. The name of the directory where the documents are stored, eg `pdfs`. If nothing is provided, it will look for files in the current working directory.
+2. The name of the directory scraped files extractions will be saved. Defaults to `renders`.
 3. The resolution of the temporary images 
