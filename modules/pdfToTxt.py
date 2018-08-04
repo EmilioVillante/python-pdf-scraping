@@ -4,6 +4,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 from datetime import datetime
+import shutil
 
 # Install PIL (https://pypi.org/project/Unidecode/)
 # Mac		- pip install Unidecode
@@ -43,7 +44,9 @@ tempImageDirectoryName = 'pdfImageConversions'
 def getAbsolutePathFileName(absolutePath=''):
     fileName = os.path.basename(absolutePath)
     fileName = fileName.split('.')[0]
-    return fileName.replace(' ', '')
+    fileName = fileName.replace(' ', '')
+    fileName = fileName.replace('-', '')
+    return fileName
 
 
 # Gets a list of pdf file paths in a given directory.
@@ -94,7 +97,7 @@ def getFileExtract(readerFilePath, workingDirectory, renderDirectoryName, resolu
                 # If the render file exists and is populated, we will return its contents
                 scrapedContent = renderFileContents
 
-        # Split the data into the raw text extract and the informaion extract
+        # Split the data into the raw text extract and the information extract
         return scrapedContent.split('<data>')
     except Exception as ex:
         customLogger.log(ex, 'fatal')
@@ -131,7 +134,7 @@ def scrapePdf(readerFilePath, renderFilePath, resolution, workingDirectory):
 
                         customLogger.log("Created the temporary directory used for storing temp pdf image conversions")
 
-                        # Save the pdf pages as images. We save the iamges as it helps us debug potential issues with
+                        # Save the pdf pages as images. We save the images as it helps us debug potential issues with
                         # pdf conversions
                         source.save(filename=os.path.join(workingDirectory, tempImageDirectoryName, fileName + '.png'))
                         customLogger.log("saved pdf pages as png's")
@@ -183,7 +186,7 @@ def scrapePdf(readerFilePath, renderFilePath, resolution, workingDirectory):
                         renderFile.close()
 
                         # Delete the temporary image directory we used to save the images
-                        # shutil.rmtree(join(workingDirectory, tempImageDirectoryName))
+                        shutil.rmtree(join(workingDirectory, tempImageDirectoryName))
 
                         customLogger.log("Complete scrape of '"
                                          + os.path.basename(readerFilePath)

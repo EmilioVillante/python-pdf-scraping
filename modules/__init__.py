@@ -1,1 +1,1 @@
-__all__ = ["customLogger", "dataExtractor", "pdfToText"]
+__all__ = ["customLogger", "dataExtractor", "pdfToTxt"]

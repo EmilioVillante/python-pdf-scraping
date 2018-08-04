@@ -11,7 +11,7 @@ def stringIsInt(s):
         return False
 
 
-# Constructs a regex grouped or expression as (i0|i1|i2) where i is the iterate of the array
+# Constructs a regex grouped 'or' expression as (i0|i1|i2) where i is the iterate of the array
 def getArrayAsRegexOr(arr):
     return '(' + '|'.join(re.escape(x) for x in arr) + ')'
 
@@ -76,14 +76,15 @@ def getQuestionAnswer(question, documentString, answers, checkStrings):
     return matchedAnswer
 
 
-# Returns a list of lines which sequentially match a given string
-def getDataLinesMatchingString(matchingString, data):
+# Returns a list of lines which sequentially match a given string.
+# By giving a startIndex, you can return the first match after the given index.
+def getDataLinesMatchingString(matchingString, data, startIndex=0):
     # Strip the whitespace to ensure white spaces do not prevent matches
     matchingString = matchingString.replace(' ', '')
     lineMatches = []
     matchCopy = matchingString
 
-    for line in data:
+    for line in data[startIndex:]:
         # Do nothing if we find a match
         if not matchCopy:
             break
@@ -95,8 +96,9 @@ def getDataLinesMatchingString(matchingString, data):
             # As we are looking for a sequence of matching lines, we should ensure that the line we check matches the
             # start of the remaining string.
             if matchCopy.find(line[11]) is 0:
-                lineMatches.append(line)
-                matchCopy = matchCopy.replace(line[11], '')
+                if line[11]:
+                    lineMatches.append(line)
+                    matchCopy = matchCopy.replace(line[11], '')
             else:
                 lineMatches = []
                 matchCopy = matchingString
@@ -166,9 +168,7 @@ def getTableColumns(
         for rowIndex in range(tableRange):
 
             # Step 4: Determine if the text of the data line is within the column. If true, add it to the column string
-
-            # As the loop will start at 0 we need to offset to the table text data line
-            loopIndex = startIndex + rowIndex + 1
+            loopIndex = startIndex + rowIndex
 
             # Define the left and right coordinates of the line
             lineLeft = int(data[loopIndex][6])
