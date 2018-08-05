@@ -118,7 +118,7 @@ def getBottomOfDataLine(line):
 
 # Get the text contents of a table split by the column. All rows will be concat to the same string
 def getTableColumns(
-        preLines, postLines, ODFirstColumnHeader, ODLastColumnHeader, numberOfColumns, data, combineColumns=False):
+        preLines, postLines, ODFirstColumnHeader, ODLastColumnHeader, numberOfColumns, data, combineColumns=False, skipIndex=[]):
     # Null check, parameters should have values.
     if not preLines \
             or not postLines \
@@ -165,18 +165,24 @@ def getTableColumns(
         columnText = ''
 
         # Loop for the number of data rows that contain the table text
-        for rowIndex in range(tableRange):
+        for loopIndex in range(tableRange):
 
             # Step 4: Determine if the text of the data line is within the column. If true, add it to the column string
-            loopIndex = startIndex + rowIndex
+            rowIndex = startIndex + loopIndex
+
+            # If the row we are looping through has an index that matches our skip index, we will ignore it
+            if skipIndex and skipIndex[0] and skipIndex[1]:
+                if skipIndex[0] <= rowIndex <= skipIndex[1]:
+                    continue
 
             # Define the left and right coordinates of the line
-            lineLeft = int(data[loopIndex][6])
-            lineRight = lineLeft + int(data[loopIndex][8])
+            lineLeft = int(data[rowIndex][6])
+            lineRight = lineLeft + int(data[rowIndex][8])
 
-            # If the coordinates fit inside our column, add the text to our column string
-            if lineLeft >= columnLeft and lineRight <= columnRight:
-                columnText = columnText + ' ' + data[loopIndex][11]
+            # If the coordinates fit inside our column, add the text to our column string.
+            # The first column should always pass the left check and the last column should always pass the right check.
+            if (columnNumber is 1 or lineLeft >= columnLeft) and (columnNumber is numberOfColumns or lineRight <= columnRight):
+                columnText = columnText + ' ' + data[rowIndex][11]
 
         # Once we have looped through the table text data lines, add the column text to our table text array
         if combineColumns:
