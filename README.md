@@ -26,6 +26,9 @@ These instructions will get you a copy of the project up and running on your loc
 		* Install [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki)
 	 	* Setup tesseract as an environment variable
 		* `python3 -m pip install pytesseract`
+5. Get [Unidecode](https://pypi.org/project/Unidecode/)
+	* Mac		- `python3 -m pip install Unidecode`
+	* Windows	- `python3 -m pip install Unidecode`
 
 ## Running
 
